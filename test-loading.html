@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Chargement - Casque3D</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f5f7 0%, #ffffff 50%, #f5f5f7 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .test-button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+
+        .test-button:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007AFF;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚀 Test de Performance - Casque3D</h1>
+
+        <div class="status info">
+            <strong>Instructions :</strong> Cliquez sur "Tester le Chargement" pour mesurer les performances de votre
+            site.
+        </div>
+
+        <div class="metrics">
+            <div class="metric">
+                <div class="metric-value" id="loadTime">-</div>
+                <div class="metric-label">Temps de chargement (ms)</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value" id="status">En attente</div>
+                <div class="metric-label">Statut</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value" id="performance">-</div>
+                <div class="metric-label">Performance</div>
+            </div>
+        </div>
+
+        <button class="test-button" onclick="testLoading()">🧪 Tester le Chargement</button>
+        <button class="test-button" onclick="openSite()">🌐 Ouvrir le Site</button>
+        <button class="test-button" onclick="clearResults()">🗑️ Effacer</button>
+
+        <div id="results"></div>
+
+        <div class="status info" style="margin-top: 30px;">
+            <h3>📊 Objectifs de Performance</h3>
+            <ul>
+                <li><strong>🟢 Optimal :</strong>
+                    < 3000ms</li>
+                <li><strong>🟡 Acceptable :</strong> 3000-5000ms</li>
+                <li><strong>🔴 Problématique :</strong> > 5000ms</li>
+            </ul>
+        </div>
+
+        <div class="status warning">
+            <strong>💡 Conseil :</strong> Utilisez Ctrl+D sur le site principal pour activer le diagnostic en temps
+            réel.
+        </div>
+    </div>
+
+    <script>
+        let testStartTime = 0;
+
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong> - ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+
+        function updateMetric(id, value) {
+            document.getElementById(id).textContent = value;
+        }
+
+        function testLoading() {
+            addResult('🚀 Démarrage du test de chargement...', 'info');
+            updateMetric('status', 'Test en cours...');
+            updateMetric('loadTime', '-');
+            updateMetric('performance', '-');
+
+            testStartTime = performance.now();
+
+            // Simuler le test de chargement
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = 'http://localhost:5175/'; // Port du serveur Vite
+
+            iframe.onload = function () {
+                const loadTime = Math.round(performance.now() - testStartTime);
+                updateMetric('loadTime', loadTime);
+                updateMetric('status', 'Chargé');
+
+                let performanceLevel, resultType;
+                if (loadTime < 3000) {
+                    performanceLevel = '🟢 Optimal';
+                    resultType = 'success';
+                } else if (loadTime < 5000) {
+                    performanceLevel = '🟡 Acceptable';
+                    resultType = 'warning';
+                } else {
+                    performanceLevel = '🔴 Problématique';
+                    resultType = 'error';
+                }
+
+                updateMetric('performance', performanceLevel);
+                addResult(`✅ Test terminé en ${loadTime}ms - ${performanceLevel}`, resultType);
+
+                document.body.removeChild(iframe);
+            };
+
+            iframe.onerror = function () {
+                const loadTime = Math.round(performance.now() - testStartTime);
+                updateMetric('loadTime', loadTime);
+                updateMetric('status', 'Erreur');
+                updateMetric('performance', '🔴 Échec');
+                addResult('❌ Erreur de chargement - Vérifiez que le serveur est démarré', 'error');
+                document.body.removeChild(iframe);
+            };
+
+            document.body.appendChild(iframe);
+        }
+
+        function openSite() {
+            addResult('🌐 Ouverture du site dans un nouvel onglet...', 'info');
+            window.open('http://localhost:5175/', '_blank');
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            updateMetric('loadTime', '-');
+            updateMetric('status', 'En attente');
+            updateMetric('performance', '-');
+            addResult('🗑️ Résultats effacés', 'info');
+        }
+
+        // Test automatique au chargement de la page
+        window.addEventListener('load', function () {
+            addResult('📋 Page de test chargée - Prêt pour les tests', 'success');
+        });
+    </script>
+</body>
+
+</html>
