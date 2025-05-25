@@ -13,20 +13,13 @@ function HeadphonesModel({ rotationY }) {
     const [modelReady, setModelReady] = useState(false)
     const modelUrl = '/models/headphones.glb'
 
-    let gltf;
-    try {
-        gltf = useGLTF(modelUrl)
-    } catch (error) {
-        console.log('🎧 HeadphoneViewer: Erreur de chargement du modèle -', error.message)
-        return null
-    }
+    // Utiliser useGLTF correctement (sans try-catch autour du hook)
+    const { scene } = useGLTF(modelUrl)
 
-    if (!gltf || !gltf.scene) {
+    if (!scene) {
         console.log('🎧 HeadphoneViewer: Modèle ou scène non disponible')
         return null
     }
-
-    const { scene } = gltf
 
     // Clonage du modèle pour éviter les conflits
     const clonedScene = scene.clone()
@@ -79,13 +72,15 @@ function HeadphonesModel({ rotationY }) {
 function HeadphonesBlackModel() {
     const modelUrl = '/models/headphonesblack.glb'
 
-    // Juste charger le modèle sans le rendre
-    try {
-        useGLTF(modelUrl)
-        console.log('🎧 HeadphonesBlackModel: Modèle noir préchargé')
-    } catch (error) {
-        console.log('🎧 HeadphonesBlackModel: Erreur de préchargement -', error.message)
-    }
+    // Charger le modèle correctement (sans try-catch autour du hook)
+    const { scene } = useGLTF(modelUrl)
+
+    // Log une seule fois quand le modèle est chargé
+    useEffect(() => {
+        if (scene) {
+            console.log('🎧 HeadphonesBlackModel: Modèle noir préchargé')
+        }
+    }, [scene])
 
     // Ne rien rendre visuellement
     return null
