@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import '@react-three/fiber'
-import '@react-three/drei'
 import './src/styles/globals.css';
 import App from './App.jsx';
 

@@ -13,6 +13,31 @@ export const useModelPreloader = () => {
     return context;
 };
 
+// Modèles prioritaires (les 2 premières scènes)
+const priorityModels = [
+    '/models/headphones.glb',
+    '/models/headphonesblack.glb'
+];
+
+// Modèles de couleurs (chargement en arrière-plan)
+const colorModels = [
+    '/models/headphones.glb',
+    '/models/headphonesblack.glb',
+    '/models/headphonesblue.glb',
+    '/models/headphonesgold.glb'
+];
+
+// SOLUTION: Précharger les modèles EN DEHORS du composant
+// C'est la méthode recommandée par React Three Fiber
+priorityModels.forEach(modelUrl => {
+    useGLTF.preload(modelUrl);
+});
+
+// Précharger aussi les couleurs en dehors du composant
+colorModels.forEach(modelUrl => {
+    useGLTF.preload(modelUrl);
+});
+
 // Provider du contexte
 export const ModelPreloaderProvider = ({ children }) => {
     // États de chargement
@@ -28,20 +53,6 @@ export const ModelPreloaderProvider = ({ children }) => {
     // Refs pour éviter les boucles infinies
     const loadingStarted = useRef(false);
 
-    // Modèles prioritaires (les 2 premières scènes)
-    const priorityModels = [
-        '/models/headphones.glb',
-        '/models/headphonesblack.glb'
-    ];
-
-    // Modèles de couleurs (chargement en arrière-plan)
-    const colorModels = [
-        '/models/headphones.glb',
-        '/models/headphonesblack.glb',
-        '/models/headphonesblue.glb',
-        '/models/headphonesgold.glb'
-    ];
-
     // Chargement des fichiers .glb (étape 1)
     useEffect(() => {
         if (loadingStarted.current) return;
@@ -52,18 +63,11 @@ export const ModelPreloaderProvider = ({ children }) => {
             setLoadingProgress(20);
 
             try {
-                // Précharger les modèles critiques
-                console.log('📦 Préchargement des fichiers...');
-                const preloadPromises = priorityModels.map(modelUrl => {
-                    console.log(`📦 Préchargement: ${modelUrl}`);
-                    return new Promise((resolve) => {
-                        useGLTF.preload(modelUrl);
-                        // Simuler un délai pour le préchargement
-                        setTimeout(resolve, 100);
-                    });
-                });
+                // Les modèles sont déjà préchargés grâce à useGLTF.preload() appelé en dehors
+                console.log('📦 Modèles déjà préchargés, configuration en cours...');
 
-                await Promise.all(preloadPromises);
+                // Simuler un délai pour le chargement
+                await new Promise(resolve => setTimeout(resolve, 500));
                 setLoadingProgress(60);
 
                 // Marquer les fichiers comme chargés (mais pas encore configurés)
@@ -150,11 +154,7 @@ export const ModelPreloaderProvider = ({ children }) => {
     // Préchargement des couleurs en arrière-plan (étape 3)
     useEffect(() => {
         if (isConfigured) {
-            console.log('🎨 Préchargement des couleurs en arrière-plan...');
-            colorModels.forEach(url => {
-                useGLTF.preload(url);
-            });
-            console.log('🎨 Couleurs prêtes !');
+            console.log('🎨 Couleurs déjà préchargées !');
         }
     }, [isConfigured]);
 
