@@ -1,0 +1,35 @@
+# Configuration des types MIME pour éviter l'erreur "text/plain"
+AddType text/css .css
+AddType application/javascript .js
+AddType application/json .json
+
+# Configuration pour les modèles 3D
+AddType model/gltf+json .gltf
+AddType model/gltf-binary .glb
+
+# Compression gzip
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# Cache headers pour les assets
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType model/gltf+json "access plus 1 year"
+    ExpiresByType model/gltf-binary "access plus 1 year"
+</IfModule>
+
+# Fallback pour SPA (Single Page Application)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule> 

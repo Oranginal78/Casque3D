@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: casque3d
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    headers:
+      - path: "*.css"
+        name: Content-Type
+        value: text/css; charset=utf-8
+      - path: "*.js"
+        name: Content-Type
+        value: application/javascript; charset=utf-8
+      - path: "*.gltf"
+        name: Content-Type
+        value: model/gltf+json
+      - path: "*.glb"
+        name: Content-Type
+        value: model/gltf-binary 
