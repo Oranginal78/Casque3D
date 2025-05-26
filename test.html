@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple</title>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="module">
+        console.log('🔧 Script de test chargé');
+
+        // Test 1: JavaScript de base
+        document.getElementById('root').innerHTML = `
+            <div style="padding: 20px; font-family: Arial; text-align: center; background: #f0f0f0; min-height: 100vh;">
+                <h1>🎉 JavaScript fonctionne !</h1>
+                <p>Si vous voyez ce message, JavaScript s'exécute correctement.</p>
+                <p>Timestamp: ${new Date().toLocaleString()}</p>
+                <button onclick="alert('Test réussi !')">Tester</button>
+                <hr>
+                <p>Maintenant, testons React...</p>
+                <div id="react-test">Chargement de React...</div>
+            </div>
+        `;
+
+        // Test 2: Import React
+        try {
+            console.log('🔧 Tentative d\'import de React...');
+            const React = await import('react');
+            const ReactDOM = await import('react-dom/client');
+
+            console.log('✅ React importé avec succès:', React);
+
+            // Test 3: Créer un composant React
+            const TestComponent = React.createElement('div', {
+                style: { padding: '10px', background: '#e8f5e8', border: '1px solid green', margin: '10px 0' }
+            }, [
+                React.createElement('h3', { key: 'title' }, '✅ React fonctionne !'),
+                React.createElement('p', { key: 'message' }, 'React s\'est chargé et s\'exécute correctement.')
+            ]);
+
+            // Test 4: Rendre le composant
+            const root = ReactDOM.createRoot(document.getElementById('react-test'));
+            root.render(TestComponent);
+
+            console.log('✅ React rendu avec succès !');
+
+        } catch (error) {
+            console.error('❌ Erreur avec React:', error);
+            document.getElementById('react-test').innerHTML = `
+                <div style="padding: 10px; background: #ffe8e8; border: 1px solid red;">
+                    <h3>❌ Erreur React</h3>
+                    <p>Erreur: ${error.message}</p>
+                    <pre>${error.stack}</pre>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

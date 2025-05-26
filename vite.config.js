@@ -24,10 +24,5 @@ export default defineConfig({
                 }
             }
         }
-    },
-    server: {
-        headers: {
-            'Content-Type': 'text/css; charset=utf-8'
-        }
     }
 })
