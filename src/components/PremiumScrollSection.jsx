@@ -90,8 +90,8 @@ const PremiumScrollSection = () => {
     // Styles pour l'animation CSS
     const animationDuration = isMobile ? '40s' : '30s'; // Plus lent sur mobile
     const cardWidth = isMobile ? 280 : 320; // En pixels
-    const cardHeight = isMobile ? '180px' : '200px';
-    const gapPx = isMobile ? 24 : 32; // 1.5rem = 24px, 2rem = 32px
+    const cardHeight = isMobile ? '160px' : '200px'; // Hauteur réduite sur mobile
+    const gapPx = isMobile ? 16 : 32; // Réduire l'espace entre les cartes sur mobile
 
     // Calcul correct de la distance de translation
     const totalCardWidth = cardWidth + gapPx;
@@ -117,7 +117,7 @@ const PremiumScrollSection = () => {
                 className="premium-scroll-section"
                 style={{
                     background: '#f5f5f7',
-                    padding: isMobile ? '2rem 1rem' : '3rem 2rem',
+                    padding: isMobile ? '1.5rem 1rem' : '3rem 2rem', // Réduire le padding mobile
                     position: 'relative',
                     overflow: 'hidden',
                     zIndex: 30
@@ -133,7 +133,7 @@ const PremiumScrollSection = () => {
                         fontSize: isMobile ? 'clamp(1.75rem, 6vw, 2.5rem)' : 'clamp(2rem, 4vw, 3rem)',
                         fontWeight: '600',
                         color: '#1d1d1f',
-                        marginBottom: '0.5rem',
+                        marginBottom: isMobile ? '0.25rem' : '0.5rem', // Réduire la marge mobile
                         lineHeight: '1.1',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
                         letterSpacing: '-0.03em'
@@ -143,14 +143,14 @@ const PremiumScrollSection = () => {
 
                     <p style={{
                         color: '#515154',
-                        marginBottom: isMobile ? '2rem' : '2.5rem',
+                        marginBottom: isMobile ? '1.5rem' : '2.5rem', // Réduire la marge mobile
                         lineHeight: '1.5',
                         fontSize: isMobile ? '1rem' : '1.25rem',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                         fontWeight: '400',
                         maxWidth: isMobile ? '100%' : '600px',
-                        margin: isMobile ? '0 auto 2rem' : '0 auto 2.5rem',
-                        padding: isMobile ? '0 1rem' : '0'
+                        margin: isMobile ? '0 auto 1.5rem' : '0 auto 2.5rem',
+                        padding: isMobile ? '0 0.5rem' : '0' // Réduire le padding mobile
                     }}>
                         Découvrez pourquoi notre casque redéfinit les standards de l'audio premium
                     </p>
@@ -159,7 +159,10 @@ const PremiumScrollSection = () => {
                     <div style={{
                         position: 'relative',
                         overflow: 'hidden',
-                        margin: isMobile ? '0 -1rem' : '0 -2rem'
+                        margin: isMobile ? '0 -1rem' : '0 -2rem',
+                        // Améliorer le padding pour éviter la coupure sur mobile
+                        paddingTop: isMobile ? '1rem' : '0.5rem',
+                        paddingBottom: isMobile ? '1rem' : '0.5rem'
                     }}>
                         <div
                             ref={scrollRef}
@@ -168,7 +171,7 @@ const PremiumScrollSection = () => {
                                 display: 'flex',
                                 gap: `${gapPx}px`,
                                 overflowX: 'hidden',
-                                padding: isMobile ? '1.5rem 1rem' : '2rem',
+                                padding: isMobile ? '1rem' : '2rem', // Padding container réduit sur mobile
                                 scrollbarWidth: 'none',
                                 msOverflowStyle: 'none',
                                 WebkitOverflowScrolling: 'touch',
@@ -198,11 +201,11 @@ const PremiumScrollSection = () => {
                                     style={{
                                         minWidth: `${cardWidth}px`,
                                         maxWidth: `${cardWidth}px`,
-                                        height: cardHeight,
+                                        height: cardHeight, // Utiliser la hauteur définie (160px mobile)
                                         background: 'rgba(255, 255, 255, 0.8)',
                                         backdropFilter: 'blur(20px)',
                                         borderRadius: isMobile ? '16px' : '20px',
-                                        padding: isMobile ? '1.5rem 1rem' : '2.5rem 2rem',
+                                        padding: isMobile ? '1rem 0.75rem' : '2.5rem 2rem', // Padding optimisé mobile
                                         display: 'flex',
                                         flexDirection: 'column',
                                         justifyContent: 'center',
@@ -221,8 +224,8 @@ const PremiumScrollSection = () => {
                                 >
                                     {/* Icône */}
                                     <div style={{
-                                        fontSize: isMobile ? '1.5rem' : '2rem',
-                                        marginBottom: '0.5rem',
+                                        fontSize: isMobile ? '1.25rem' : '2rem', // Taille icône réduite mobile
+                                        marginBottom: isMobile ? '0.125rem' : '0.5rem', // Marge réduite mobile
                                         opacity: 0.8,
                                         transition: 'all 0.3s ease'
                                     }}>
@@ -231,11 +234,11 @@ const PremiumScrollSection = () => {
 
                                     {/* Contenu principal */}
                                     <h3 style={{
-                                        fontSize: isMobile ? '1rem' : '1.125rem',
+                                        fontSize: isMobile ? '0.875rem' : '1.125rem', // Titre réduit mobile
                                         fontWeight: '600',
                                         color: '#1d1d1f',
-                                        marginBottom: '0.5rem',
-                                        lineHeight: '1.3',
+                                        marginBottom: isMobile ? '0.125rem' : '0.5rem', // Marge réduite mobile
+                                        lineHeight: isMobile ? '1.2' : '1.3', // Line-height optimisé mobile
                                         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                                         // Limiter le texte sur mobile
                                         overflow: 'hidden',
@@ -250,13 +253,14 @@ const PremiumScrollSection = () => {
                                     {/* Auteur/Source */}
                                     <p style={{
                                         color: '#86868b',
-                                        fontSize: isMobile ? '0.8rem' : '0.875rem',
+                                        fontSize: isMobile ? '0.75rem' : '0.875rem', // Auteur réduit mobile
                                         fontWeight: '400',
                                         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                                         overflow: 'hidden',
                                         textOverflow: 'ellipsis',
                                         whiteSpace: 'nowrap',
-                                        maxWidth: '100%'
+                                        maxWidth: '100%',
+                                        margin: 0 // Supprimer les marges par défaut
                                     }}>
                                         {item.author}
                                     </p>
@@ -268,8 +272,8 @@ const PremiumScrollSection = () => {
                     {/* Indicateur mobile */}
                     {isMobile && (
                         <div style={{
-                            marginTop: '1rem',
-                            fontSize: '0.8rem',
+                            marginTop: '0.75rem', // Réduire la marge mobile
+                            fontSize: '0.75rem', // Réduire la taille de police
                             color: '#86868b',
                             opacity: 0.7
                         }}>

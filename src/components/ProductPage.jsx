@@ -55,10 +55,10 @@ const ProductPage = () => {
                 zIndex: 20,
                 background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
-                marginTop: isMobile ? '40vh' : '50vh', // Réduire l'espace sur mobile
+                marginTop: isMobile ? '25vh' : '50vh', // Réduire encore plus l'espace sur mobile
                 borderRadius: '20px 20px 0 0',
                 padding: isMobile ? '1.5rem 1rem' : '2rem', // Réduire le padding mobile
-                minHeight: isMobile ? '40vh' : '50vh'
+                minHeight: isMobile ? '30vh' : '50vh' // Réduire aussi la hauteur minimale
             }}>
                 <ProductInfo />
             </div>
