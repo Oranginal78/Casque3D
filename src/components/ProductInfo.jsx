@@ -3,6 +3,18 @@ import InteractiveHeadphoneViewer from './InteractiveHeadphoneViewer';
 
 const ProductInfo = ({ activeSection = "overview" }) => {
     const [isVisible, setIsVisible] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Détection mobile
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         setIsVisible(true);
@@ -47,21 +59,21 @@ const ProductInfo = ({ activeSection = "overview" }) => {
         <div style={{
             background: 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(20px)',
-            borderRadius: '18px',
-            padding: '3rem',
+            borderRadius: isMobile ? '16px' : '18px',
+            padding: isMobile ? '1.5rem 1rem' : '3rem',
             maxWidth: '720px',
             margin: '0 auto',
             transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
             border: '1px solid rgba(0, 0, 0, 0.05)',
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)'
+            boxShadow: isMobile ? '0 4px 20px rgba(0, 0, 0, 0.08)' : '0 10px 40px rgba(0, 0, 0, 0.1)'
         }}>
             <h3 style={{
-                fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
+                fontSize: isMobile ? 'clamp(1.5rem, 5vw, 1.75rem)' : 'clamp(1.75rem, 3vw, 2.25rem)',
                 fontWeight: '600',
                 color: '#1d1d1f',
-                marginBottom: '1rem',
+                marginBottom: isMobile ? '0.75rem' : '1rem',
                 lineHeight: '1.2',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
                 letterSpacing: '-0.02em'
@@ -71,9 +83,9 @@ const ProductInfo = ({ activeSection = "overview" }) => {
 
             <p style={{
                 color: '#515154',
-                marginBottom: '2rem',
+                marginBottom: isMobile ? '1.5rem' : '2rem',
                 lineHeight: '1.5',
-                fontSize: '1.125rem',
+                fontSize: isMobile ? '1rem' : '1.125rem',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                 fontWeight: '400'
             }}>
@@ -83,26 +95,26 @@ const ProductInfo = ({ activeSection = "overview" }) => {
             <ul style={{
                 listStyle: 'none',
                 padding: 0,
-                margin: '0 0 2.5rem 0'
+                margin: isMobile ? '0 0 1.5rem 0' : '0 0 2.5rem 0'
             }}>
                 {currentInfo.features.map((feature, index) => (
                     <li key={index} style={{
                         display: 'flex',
                         alignItems: 'flex-start',
                         color: '#1d1d1f',
-                        marginBottom: '1rem',
-                        fontSize: '17px',
+                        marginBottom: isMobile ? '0.75rem' : '1rem',
+                        fontSize: isMobile ? '15px' : '17px',
                         lineHeight: '1.4',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                         fontWeight: '400'
                     }}>
                         <div style={{
-                            width: '6px',
-                            height: '6px',
+                            width: isMobile ? '5px' : '6px',
+                            height: isMobile ? '5px' : '6px',
                             background: '#0071e3',
                             borderRadius: '50%',
-                            marginTop: '8px',
-                            marginRight: '16px',
+                            marginTop: isMobile ? '6px' : '8px',
+                            marginRight: isMobile ? '12px' : '16px',
                             flexShrink: 0
                         }}></div>
                         {feature}
@@ -112,23 +124,25 @@ const ProductInfo = ({ activeSection = "overview" }) => {
 
             <div style={{
                 display: 'flex',
-                gap: '16px',
+                gap: isMobile ? '12px' : '16px',
                 flexWrap: 'wrap',
-                alignItems: 'center'
+                alignItems: 'center',
+                flexDirection: isMobile ? 'column' : 'row'
             }}>
                 <button style={{
                     background: '#0071e3',
                     color: 'white',
-                    padding: '17px 32px',
+                    padding: isMobile ? '14px 24px' : '17px 32px',
                     borderRadius: '980px',
                     border: 'none',
                     cursor: 'pointer',
-                    fontSize: '17px',
+                    fontSize: isMobile ? '16px' : '17px',
                     fontWeight: '400',
                     transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                     letterSpacing: '-0.01em',
-                    minWidth: '120px'
+                    minWidth: isMobile ? '200px' : '120px',
+                    width: isMobile ? '100%' : 'auto'
                 }}
                     onMouseEnter={(e) => {
                         e.target.style.background = '#0077ed';
@@ -152,15 +166,16 @@ const ProductInfo = ({ activeSection = "overview" }) => {
                     background: 'transparent',
                     color: '#0071e3',
                     border: '1px solid #0071e3',
-                    padding: '16px 31px',
+                    padding: isMobile ? '13px 23px' : '16px 31px',
                     borderRadius: '980px',
                     cursor: 'pointer',
-                    fontSize: '17px',
+                    fontSize: isMobile ? '16px' : '17px',
                     fontWeight: '400',
                     transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                     letterSpacing: '-0.01em',
-                    minWidth: '120px'
+                    minWidth: isMobile ? '200px' : '120px',
+                    width: isMobile ? '100%' : 'auto'
                 }}
                     onMouseEnter={(e) => {
                         e.target.style.background = '#0071e3';
@@ -182,15 +197,29 @@ const ProductInfo = ({ activeSection = "overview" }) => {
                     Comparer
                 </button>
 
+                {!isMobile && (
+                    <div style={{
+                        fontSize: '14px',
+                        color: '#86868b',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                        marginLeft: 'auto'
+                    }}>
+                        Livraison gratuite
+                    </div>
+                )}
+            </div>
+
+            {isMobile && (
                 <div style={{
                     fontSize: '14px',
                     color: '#86868b',
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                    marginLeft: 'auto'
+                    textAlign: 'center',
+                    marginTop: '1rem'
                 }}>
                     Livraison gratuite
                 </div>
-            </div>
+            )}
         </div>
     );
 };

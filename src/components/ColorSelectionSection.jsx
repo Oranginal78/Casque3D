@@ -92,6 +92,18 @@ function LoadingSpinner() {
 const ColorSelectionSection = () => {
     const [selectedColor, setSelectedColor] = useState(colorOptions[0])
     const [isLoaded, setIsLoaded] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+
+    // Détection mobile
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Utilisation du hook de préchargement simplifié
     const { isConfigured } = useModelPreloader()
@@ -116,12 +128,12 @@ const ColorSelectionSection = () => {
     return (
         <section style={{
             background: 'linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%)',
-            padding: '4rem 2rem',
+            padding: isMobile ? '2rem 1rem' : '4rem 2rem',
             position: 'relative',
-            overflow: 'visible', // Permettre le débordement global
-            zIndex: 5, // Z-index pour la section entière
-            marginTop: '2rem', // Espace supplémentaire pour le débordement
-            marginBottom: '2rem'
+            overflow: isMobile ? 'hidden' : 'visible', // Réduire débordement sur mobile
+            zIndex: 5,
+            marginTop: isMobile ? '1rem' : '2rem',
+            marginBottom: isMobile ? '1rem' : '2rem'
         }}>
             <div style={{
                 maxWidth: '1200px',
@@ -130,7 +142,7 @@ const ColorSelectionSection = () => {
             }}>
                 {/* Titre et sous-titre */}
                 <h2 style={{
-                    fontSize: 'clamp(2rem, 4vw, 3rem)',
+                    fontSize: isMobile ? 'clamp(1.75rem, 6vw, 2.5rem)' : 'clamp(2rem, 4vw, 3rem)',
                     fontWeight: '600',
                     color: '#1d1d1f',
                     marginBottom: '0.5rem',
@@ -145,7 +157,7 @@ const ColorSelectionSection = () => {
                     color: '#515154',
                     marginBottom: '1rem',
                     lineHeight: '1.5',
-                    fontSize: '1.25rem',
+                    fontSize: isMobile ? '1rem' : '1.25rem',
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                     fontWeight: '400',
                     maxWidth: '600px',
@@ -156,38 +168,38 @@ const ColorSelectionSection = () => {
 
                 {/* Instructions pour l'interaction */}
                 <p style={{
-                    marginBottom: '3rem',
+                    marginBottom: isMobile ? '2rem' : '3rem',
                     fontSize: '0.875rem',
                     color: '#86868b',
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                     fontWeight: '400'
                 }}>
-                    Faites glisser pour faire pivoter • Touchez une couleur pour changer
+                    {isMobile ? 'Touchez pour faire pivoter • Touchez une couleur pour changer' : 'Faites glisser pour faire pivoter • Touchez une couleur pour changer'}
                 </p>
 
                 {/* Zone 3D avec effet "hors cadre" */}
                 <div style={{
                     position: 'relative',
                     width: '100%',
-                    height: '500px',
+                    height: isMobile ? '400px' : '500px',
                     marginBottom: '2rem',
-                    borderRadius: '20px',
+                    borderRadius: isMobile ? '16px' : '20px',
                     background: 'rgba(255, 255, 255, 0.3)',
                     backdropFilter: 'blur(20px)',
                     border: '1px solid rgba(255, 255, 255, 0.2)',
-                    overflow: 'visible', // Permettre le débordement
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-                    zIndex: 1 // Base z-index pour la section
+                    overflow: isMobile ? 'hidden' : 'visible', // Contrôler débordement mobile
+                    boxShadow: isMobile ? '0 4px 20px rgba(0, 0, 0, 0.08)' : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                    zIndex: 1
                 }}>
                     {/* Canvas 3D débordant */}
                     <div style={{
                         position: 'absolute',
-                        top: '-15%', // Déborde vers le haut
-                        left: '-10%', // Déborde vers la gauche
-                        width: '120%', // Plus large que la section
-                        height: '130%', // Plus haut que la section
-                        zIndex: 10, // Au-dessus de la section mais sous les contrôles
-                        pointerEvents: 'auto' // Garder l'interactivité
+                        top: isMobile ? '0%' : '-15%', // Pas de débordement sur mobile
+                        left: isMobile ? '0%' : '-10%',
+                        width: isMobile ? '100%' : '120%',
+                        height: isMobile ? '100%' : '130%',
+                        zIndex: 10,
+                        pointerEvents: 'auto'
                     }}>
                         <Canvas
                             camera={{
@@ -259,7 +271,7 @@ const ColorSelectionSection = () => {
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
-                            zIndex: 20 // Au-dessus du canvas
+                            zIndex: 20
                         }}>
                             <LoadingSpinner />
                         </div>
@@ -271,10 +283,10 @@ const ColorSelectionSection = () => {
                     marginBottom: '2rem',
                     transition: 'all 0.3s ease',
                     position: 'relative',
-                    zIndex: 15 // Au-dessus du modèle débordant
+                    zIndex: 15
                 }}>
                     <h3 style={{
-                        fontSize: '1.5rem',
+                        fontSize: isMobile ? '1.25rem' : '1.5rem',
                         fontWeight: '600',
                         color: '#1d1d1f',
                         marginBottom: '0.25rem',
@@ -283,7 +295,7 @@ const ColorSelectionSection = () => {
                         {selectedColor.name}
                     </h3>
                     <p style={{
-                        fontSize: '1rem',
+                        fontSize: isMobile ? '0.9rem' : '1rem',
                         color: '#515154',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                         fontWeight: '400'
@@ -299,10 +311,10 @@ const ColorSelectionSection = () => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        gap: '1.5rem',
+                        gap: isMobile ? '1rem' : '1.5rem',
                         flexWrap: 'wrap',
                         position: 'relative',
-                        zIndex: 15 // Au-dessus du modèle débordant
+                        zIndex: 15
                     }}
                 >
                     {colorOptions.map((colorOption) => (
@@ -312,8 +324,8 @@ const ColorSelectionSection = () => {
                             aria-label={`Sélectionner la couleur ${colorOption.name}`}
                             className="color-button"
                             style={{
-                                width: '60px',
-                                height: '60px',
+                                width: isMobile ? '50px' : '60px',
+                                height: isMobile ? '50px' : '60px',
                                 borderRadius: '50%',
                                 border: selectedColor.id === colorOption.id
                                     ? '3px solid #007AFF'
@@ -330,13 +342,13 @@ const ColorSelectionSection = () => {
                                 minHeight: '44px'
                             }}
                             onMouseEnter={(e) => {
-                                if (selectedColor.id !== colorOption.id) {
+                                if (selectedColor.id !== colorOption.id && !isMobile) {
                                     e.target.style.transform = 'scale(1.05)'
                                     e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)'
                                 }
                             }}
                             onMouseLeave={(e) => {
-                                if (selectedColor.id !== colorOption.id) {
+                                if (selectedColor.id !== colorOption.id && !isMobile) {
                                     e.target.style.transform = 'scale(1)'
                                     e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)'
                                 }
@@ -349,14 +361,14 @@ const ColorSelectionSection = () => {
                                     top: '50%',
                                     left: '50%',
                                     transform: 'translate(-50%, -50%)',
-                                    width: '20px',
-                                    height: '20px',
+                                    width: isMobile ? '16px' : '20px',
+                                    height: isMobile ? '16px' : '20px',
                                     borderRadius: '50%',
                                     background: colorOption.color === '#f5f5f7' ? '#1d1d1f' : '#ffffff',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    fontSize: '12px',
+                                    fontSize: isMobile ? '10px' : '12px',
                                     fontWeight: 'bold'
                                 }}>
                                     ✓
@@ -364,6 +376,87 @@ const ColorSelectionSection = () => {
                             )}
                         </button>
                     ))}
+                </div>
+
+                {/* Section Prix intégrée */}
+                <div style={{
+                    marginTop: isMobile ? '3rem' : '4rem',
+                    padding: isMobile ? '2rem 1rem' : '3rem 2rem',
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(20px)',
+                    borderRadius: isMobile ? '16px' : '20px',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    boxShadow: isMobile ? '0 4px 20px rgba(0, 0, 0, 0.08)' : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                    textAlign: 'center'
+                }}>
+                    <h3 style={{
+                        fontSize: isMobile ? '1.5rem' : '2rem',
+                        fontWeight: '600',
+                        color: '#1d1d1f',
+                        marginBottom: '1rem',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif'
+                    }}>
+                        Casque Audio Premium
+                    </h3>
+
+                    <div style={{
+                        fontSize: isMobile ? '2rem' : '2.5rem',
+                        fontWeight: '700',
+                        color: '#1d1d1f',
+                        marginBottom: '1rem',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif'
+                    }}>
+                        599€
+                    </div>
+
+                    <p style={{
+                        color: '#515154',
+                        marginBottom: '2rem',
+                        fontSize: isMobile ? '0.9rem' : '1rem',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif'
+                    }}>
+                        Livraison gratuite • Retour sous 14 jours • Garantie 2 ans
+                    </p>
+
+                    <div style={{
+                        display: 'flex',
+                        gap: isMobile ? '1rem' : '1.5rem',
+                        justifyContent: 'center',
+                        flexDirection: isMobile ? 'column' : 'row',
+                        alignItems: 'center'
+                    }}>
+                        <button style={{
+                            background: '#0071e3',
+                            color: 'white',
+                            padding: isMobile ? '16px 32px' : '18px 36px',
+                            borderRadius: '980px',
+                            border: 'none',
+                            cursor: 'pointer',
+                            fontSize: isMobile ? '16px' : '17px',
+                            fontWeight: '500',
+                            fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                            transition: 'all 0.3s ease',
+                            minWidth: isMobile ? '200px' : '160px'
+                        }}>
+                            Ajouter au panier
+                        </button>
+
+                        <button style={{
+                            background: 'transparent',
+                            color: '#0071e3',
+                            border: '1px solid #0071e3',
+                            padding: isMobile ? '15px 31px' : '17px 35px',
+                            borderRadius: '980px',
+                            cursor: 'pointer',
+                            fontSize: isMobile ? '16px' : '17px',
+                            fontWeight: '500',
+                            fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                            transition: 'all 0.3s ease',
+                            minWidth: isMobile ? '200px' : '160px'
+                        }}>
+                            En savoir plus
+                        </button>
+                    </div>
                 </div>
             </div>
 

@@ -89,9 +89,13 @@ const PremiumScrollSection = () => {
 
     // Styles pour l'animation CSS
     const animationDuration = isMobile ? '40s' : '30s'; // Plus lent sur mobile
-    const cardWidth = isMobile ? '280px' : '320px';
+    const cardWidth = isMobile ? 280 : 320; // En pixels
     const cardHeight = isMobile ? '180px' : '200px';
-    const gap = isMobile ? '1.5rem' : '2rem';
+    const gapPx = isMobile ? 24 : 32; // 1.5rem = 24px, 2rem = 32px
+
+    // Calcul correct de la distance de translation
+    const totalCardWidth = cardWidth + gapPx;
+    const translateDistance = totalCardWidth * premiumContent.length;
 
     const scrollAnimation = `
         @keyframes infiniteScroll {
@@ -99,7 +103,7 @@ const PremiumScrollSection = () => {
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(-${(parseFloat(cardWidth) + parseFloat(gap) * 16) * premiumContent.length}px);
+                transform: translateX(-${translateDistance}px);
             }
         }
     `;
@@ -162,7 +166,7 @@ const PremiumScrollSection = () => {
                             className="premium-scroll-container"
                             style={{
                                 display: 'flex',
-                                gap: gap,
+                                gap: `${gapPx}px`,
                                 overflowX: 'hidden',
                                 padding: isMobile ? '1.5rem 1rem' : '2rem',
                                 scrollbarWidth: 'none',
@@ -192,8 +196,8 @@ const PremiumScrollSection = () => {
                                     key={index}
                                     className="premium-card"
                                     style={{
-                                        minWidth: cardWidth,
-                                        maxWidth: cardWidth,
+                                        minWidth: `${cardWidth}px`,
+                                        maxWidth: `${cardWidth}px`,
                                         height: cardHeight,
                                         background: 'rgba(255, 255, 255, 0.8)',
                                         backdropFilter: 'blur(20px)',

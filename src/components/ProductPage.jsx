@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import HeroSection from './HeroSection';
 import HeadphoneViewer from './HeadphoneViewer';
 import ProductInfo from './ProductInfo';
@@ -6,6 +7,19 @@ import PremiumScrollSection from './PremiumScrollSection';
 import ColorSelectionSection from './ColorSelectionSection';
 
 const ProductPage = () => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Détection mobile
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     return (
         <main style={{
             background: 'linear-gradient(135deg, #e5e5e5 0%, #cccccc 25%, #b8b8b8 50%, #a8a8a8 75%, #999999 100%)',
@@ -41,10 +55,10 @@ const ProductPage = () => {
                 zIndex: 20,
                 background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
-                marginTop: '50vh',
+                marginTop: isMobile ? '40vh' : '50vh', // Réduire l'espace sur mobile
                 borderRadius: '20px 20px 0 0',
-                padding: '2rem',
-                minHeight: '50vh'
+                padding: isMobile ? '1.5rem 1rem' : '2rem', // Réduire le padding mobile
+                minHeight: isMobile ? '40vh' : '50vh'
             }}>
                 <ProductInfo />
             </div>
@@ -55,7 +69,7 @@ const ProductPage = () => {
                 zIndex: 20,
                 background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
-                padding: '3rem 2rem',
+                padding: isMobile ? '2rem 1rem' : '3rem 2rem', // Réduire le padding mobile
                 borderTop: '1px solid rgba(0, 0, 0, 0.05)'
             }}>
                 <div style={{
@@ -64,10 +78,10 @@ const ProductPage = () => {
                     textAlign: 'center'
                 }}>
                     <h2 style={{
-                        fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
+                        fontSize: isMobile ? 'clamp(1.5rem, 5vw, 2rem)' : 'clamp(1.75rem, 3vw, 2.25rem)',
                         fontWeight: '600',
                         color: '#1d1d1f',
-                        marginBottom: '1rem',
+                        marginBottom: isMobile ? '0.75rem' : '1rem',
                         lineHeight: '1.2',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
                         letterSpacing: '-0.02em'
@@ -77,9 +91,9 @@ const ProductPage = () => {
 
                     <p style={{
                         color: '#515154',
-                        marginBottom: '2.5rem',
+                        marginBottom: isMobile ? '1.5rem' : '2.5rem',
                         lineHeight: '1.5',
-                        fontSize: '1.125rem',
+                        fontSize: isMobile ? '1rem' : '1.125rem',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
                         fontWeight: '400'
                     }}>
