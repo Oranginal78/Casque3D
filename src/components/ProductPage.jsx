@@ -55,10 +55,10 @@ const ProductPage = () => {
                 zIndex: 20,
                 background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
-                marginTop: isMobile ? '25vh' : '50vh', // Réduire encore plus l'espace sur mobile
+                marginTop: isMobile ? '5vh' : '50vh', // Réduction significative de l'espace sur mobile
                 borderRadius: '20px 20px 0 0',
-                padding: isMobile ? '1.5rem 1rem' : '2rem', // Réduire le padding mobile
-                minHeight: isMobile ? '30vh' : '50vh' // Réduire aussi la hauteur minimale
+                padding: isMobile ? '1rem 0.75rem' : '2rem', // Réduction du padding mobile
+                minHeight: isMobile ? '25vh' : '50vh' // Réduction de la hauteur minimale mobile
             }}>
                 <ProductInfo />
             </div>
@@ -69,7 +69,7 @@ const ProductPage = () => {
                 zIndex: 20,
                 background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
-                padding: isMobile ? '2rem 1rem' : '3rem 2rem', // Réduire le padding mobile
+                padding: isMobile ? '1.5rem 0.75rem' : '3rem 2rem', // Réduction du padding mobile
                 borderTop: '1px solid rgba(0, 0, 0, 0.05)'
             }}>
                 <div style={{
